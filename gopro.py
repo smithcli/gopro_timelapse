@@ -23,7 +23,6 @@ logfile.setFormatter(formatter)
 root.addHandler(logfile)
 
 gpcam = GoProCamera.GoPro()
-gpcam.overview()
 
 today = datetime.now()
 pretty_date = today.date().isoformat()
@@ -53,10 +52,12 @@ def stop_timelapse():
     logging.info('Stopped Timelapse recording')
 
 def get_video():
-    time.sleep(60)
+    # Buffer for shutter to stop video
+    time.sleep(30)
     gpcam.downloadLastMedia(path=gpcam.getMedia(), custom_filename=pretty_date +"-housebuild.mp4")
     logging.info('Downloaded video')
-    time.sleep(60)
+    # 10 min to download video
+    time.sleep(60 * 10)
     gpcam.delete("last")
     logging.info('Deleted video from gopro')
 
@@ -67,10 +68,14 @@ def main():
             current_time < end_time):
         start_timelapse()
     elif (recording and current_time < end_time):
-        logging.debug('Recording...')
+        logging.info('Recording...')
     elif (recording and current_time >= end_time):
         stop_timelapse()
         get_video()
-
+    else:
+        secondsleft = gpcam.getStatus(constants.Status.Status, constants.Status.STATUS.RemVideoTime)
+        videotime = time.gmtime(secondsleft)
+        logging.info(f'Remaining Video Time: {time.strftime("%H:%M:%S",videotime)}')
+        
 if __name__ == "__main__":
     main()
