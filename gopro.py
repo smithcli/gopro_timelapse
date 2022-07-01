@@ -56,8 +56,8 @@ def get_video():
     time.sleep(30)
     gpcam.downloadLastMedia(path=gpcam.getMedia(), custom_filename=pretty_date +"-housebuild.mp4")
     logging.info('Downloaded video')
-    # 10 min to download video
-    time.sleep(60 * 10)
+    # 15 min to download video
+    time.sleep(60 * 15)
     gpcam.delete("last")
     logging.info('Deleted video from gopro')
 

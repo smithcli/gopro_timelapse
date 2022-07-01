@@ -2,7 +2,6 @@
 Gopro timelapse script to maintain sd card space
 
 Thank you to
-[Open Gopro](https://github.com/gopro/OpenGoPro) and
 [Konrad Iturbe](https://github.com/konradit/gopro-py-api)
 for making this possible and easy.
 
